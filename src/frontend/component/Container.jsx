@@ -2,7 +2,11 @@ import React from 'react';
 
 const Container = ({ ele }) => {
     return (
-        <div className="bg-gray-800 text-white p-5 rounded-2xl w-80 shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
+        <div className=" p-5 rounded-2xl w-80 shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer"
+            style={{backgroundColor: 'var(--card-bg)',
+                    color: 'var(--card-text-color)'
+            }}
+        >
 
             <img
                 src={ele.image}

@@ -9,7 +9,7 @@ export const ThemeProvider = ({ children }) => {
         if (dark)
             document.documentElement.setAttribute("data-theme", "dark")
         else
-            document.documentElement.setAttribute("data-theme", "")
+            document.documentElement.setAttribute("data-theme", "light")
     }, [dark]);
 
     return (

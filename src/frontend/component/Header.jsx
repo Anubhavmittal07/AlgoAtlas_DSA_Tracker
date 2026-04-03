@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import React, { useContext } from 'react'
 import { ThemeContext } from './ThemeProvider'
+import logo from '../../assets/logo.png'
 
 const Header = () => {
 
@@ -10,7 +11,9 @@ const Header = () => {
   console.log(dark);
   return (
     <div className='h-20 w-full text-var(--navbar-color) font-bold flex items-center justify-between  space-x-4 border-b-2 ' style={{ background: 'var(--navbar-bg' }}>
-      <div className="logo ml-5 ">logo</div>
+      <div className="logo ml-5 ">
+        <img src={logo} height={50} width={50} className='rounded-full' />
+      </div>
       <div className="flex mr-5 space-x-4">
         <div className="add">Add to cart</div>
         <div className="about cursor-pointer hover:text-red-500">About</div>

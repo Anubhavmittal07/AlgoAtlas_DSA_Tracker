@@ -13,15 +13,17 @@ const Header = () => {
       <div className="logo ml-5 ">
         <img src={logo} height={50} width={50} className='rounded-full' />
       </div>
+
+      {/* //header */}
       <div className="flex mr-5 space-x-4">
-        <div className="add">Add to cart</div>
+        <div className="add">Wishlist</div>
         <div className="about cursor-pointer hover:text-red-500">About</div>
         <div className="mode cursor-pointer  hover:text-red-500">
           {dark ? <span onClick={() => setDark(false)}>Light</span> : <span onClick={() => setDark(true)}>Dark</span>}
         </div>
         <div className="login cursor-pointer  hover:text-red-500">Login</div>
         <div className="div cursor-pointer hover:text-red-500">SignUp</div>
-        </div>
+      </div>
         
     </div>
 

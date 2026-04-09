@@ -1,10 +1,12 @@
-import  bubbleImg from "../../assets/Bubble-Sort-Algorithm-930x620.png";
+//images
+import bubbleImg from "../../assets/Bubble-Sort-Algorithm-930x620.png";
 import insertionImg from "../../assets/Insertion.jpg";
 import selectionImg from "../../assets/Selection.jpeg";
 import mergeImg from "../../assets/merge.jpeg";
 import quickImg from "../../assets/Quick.jpg";
 import heapImg from "../../assets/Heap.jpeg";
 import countingImg from "../../assets/counting_sort.jpeg";
+
 export const sortingAlgorithms = [
     {
         id: "bubble",

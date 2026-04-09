@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 import React, { useContext } from 'react'
 import { ThemeContext } from './ThemeProvider'
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo2.0.jpeg'
+import { Link } from 'react-router-dom';
 
 const Header = () => {
 
@@ -9,14 +10,18 @@ const Header = () => {
 
   console.log(dark);
   return (
-    <div className='h-20 w-full text-var(--navbar-color) font-bold flex items-center justify-between  space-x-4 border-b-2 ' style={{ background: 'var(--navbar-bg' }}>
+    <div className='h-16 w-full text-var(--navbar-color) font-bold flex items-center justify-between  space-x-4 border-b-2 ' style={{ background: 'var(--navbar-bg' }}>
       <div className="logo ml-5 ">
-        <img src={logo} height={50} width={50} className='rounded-full' />
+        <img src={logo} height={50} width={60} className='rounded-[25px]' />
       </div>
 
       {/* //header */}
       <div className="flex mr-5 space-x-4">
-        <div className="add">Wishlist</div>
+        <Link to="/favour">
+          <div className="add cursor-pointer hover:text-red-500">
+            Wishlist
+          </div>
+        </Link>
         <div className="about cursor-pointer hover:text-red-500">About</div>
         <div className="mode cursor-pointer  hover:text-red-500">
           {dark ? <span onClick={() => setDark(false)}>Light</span> : <span onClick={() => setDark(true)}>Dark</span>}

@@ -1,6 +1,7 @@
 import React from 'react';
+import { Heart } from 'lucide-react';
 
-const Container = ({ ele }) => {
+const Container = ({ ele, favour, toggleFavour }) => {
     return (
         <div className=" p-5 rounded-2xl w-80 shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer"
             style={{backgroundColor: 'var(--card-bg)',
@@ -41,7 +42,28 @@ const Container = ({ ele }) => {
                     {ele.difficulty}
                 </span>
             </div>
+{/*             
+            HeartIcon */}
+            <div className="relative">
+  
+                <div
+                    onClick={(e) => {
+                        e.preventDefault();   
+                        e.stopPropagation();
+                        toggleFavour(ele);
+                    }}
+                    className="absolute top-2 right-2 cursor-pointer"
+                >
+                    <Heart
+                    className={`${
+                        favour.some(item => item.id === ele.id)
+                        ? "text-red-500 fill-red-500"
+                        : "text-white"
+                    }`}
+                    />
+                </div>
 
+            </div>
         </div>
     );
 };

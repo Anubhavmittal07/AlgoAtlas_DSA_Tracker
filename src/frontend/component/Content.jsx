@@ -5,7 +5,8 @@ import { Search } from 'lucide-react'
 import { Link } from 'react-router-dom';
 import { useState, useRef } from 'react';
 
-const Content = () => {
+
+const Content = ({ favour, toggleFavour }) => {
   const [search,Setsearch]=useState("");
   const inputRef = useRef(null);
   // filtering by search
@@ -60,7 +61,11 @@ const Content = () => {
       <div className='flex gap-10 flex-wrap justify-center px-5 pb-20 -mt-40'>
         {(search ? filtered : sortingAlgorithms).map((ele, index) => (
           <Link to={`/algo/${ele.id}`} key={index}>
-            <Container ele={ele} />
+            <Container 
+              ele={ele} 
+              favour={favour} 
+              toggleFavour={toggleFavour} 
+        />
           </Link>
         ))}
       </div>
@@ -72,6 +77,7 @@ const Content = () => {
           </Link>
         ))}
       </div> */}
+      
 
     </div>
   )

@@ -14,9 +14,21 @@ const Container = ({ ele, favour, toggleFavour }) => {
                 alt={ele.title}
                 className="rounded-xl h-40 w-full object-cover"
             />
-
-            <h2 className="text-2xl font-bold mt-3">{ele.title}</h2>
-
+            <div className="flex mt-3  justify-between">
+            <h2 className="text-2xl font-bold ">{ele.title}</h2>
+            <Heart
+                    onClick={(e) => {
+                        e.preventDefault();   
+                        e.stopPropagation();
+                        toggleFavour(ele);
+                    }}
+                    className={`${
+                        favour.some(item => item.id === ele.id)
+                        ? "text-red-500 fill-red-500"
+                        : "text-white"
+                    }`}
+                    />
+            </div>
 
             <p className="text-gray-400 text-sm mt-1">
                 {ele.shortDescription}
@@ -41,28 +53,6 @@ const Container = ({ ele, favour, toggleFavour }) => {
                 <span className="bg-purple-500 px-2 py-1 rounded">
                     {ele.difficulty}
                 </span>
-            </div>
-{/*             
-            HeartIcon */}
-            <div className="relative">
-  
-                <div
-                    onClick={(e) => {
-                        e.preventDefault();   
-                        e.stopPropagation();
-                        toggleFavour(ele);
-                    }}
-                    className="absolute top-2 right-2 cursor-pointer"
-                >
-                    <Heart
-                    className={`${
-                        favour.some(item => item.id === ele.id)
-                        ? "text-red-500 fill-red-500"
-                        : "text-white"
-                    }`}
-                    />
-                </div>
-
             </div>
         </div>
     );

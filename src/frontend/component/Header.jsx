@@ -1,11 +1,38 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { ThemeContext } from './ThemeProvider'
 import logo from '../../assets/logo2.0.jpeg'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LogOut } from 'lucide-react'
 
 const Header = ({ onLogout, user }) => {
   const { dark, setDark } = useContext(ThemeContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Scroll to #about when hash changes
+  useEffect(() => {
+    if (location.hash === '#about') {
+      setTimeout(() => {
+        const el = document.getElementById('about');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  }, [location]);
+
+  const handleAboutClick = () => {
+    if (location.pathname === '/') {
+      // Already on home page, just scroll
+      const el = document.getElementById('about');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // Navigate to home page with hash
+      navigate('/#about');
+    }
+  };
 
   return (
     <div
@@ -13,19 +40,26 @@ const Header = ({ onLogout, user }) => {
       style={{ background: 'var(--navbar-bg)', color: 'var(--navbar-color)' }}
     >
       <div className="logo ml-5">
-        <img src={logo} height={50} width={60} className='rounded-[25px]' />
+        <Link to="/">
+          <img src={logo} height={50} width={60} className='rounded-[25px]' />
+        </Link>
       </div>
 
       <div className="flex mr-5 space-x-4 items-center">
+        <Link to="/">
+          <div className="home cursor-pointer hover:text-red-500">
+            Home
+          </div>
+        </Link>
         <Link to="/favour">
           <div className="add cursor-pointer hover:text-red-500">Wishlist</div>
         </Link>
-        <div className="about cursor-pointer hover:text-red-500">About</div>
-        <div className="mode cursor-pointer hover:text-red-500">
-          {dark
-            ? <span onClick={() => setDark(false)}>Light</span>
-            : <span onClick={() => setDark(true)}>Dark</span>
-          }
+        <div className="about cursor-pointer hover:text-red-500" onClick={handleAboutClick}>About</div>
+        <div 
+          className="mode cursor-pointer hover:text-red-500"
+          onClick={() => setDark(!dark)}
+        >
+          {dark ? 'Light' : 'Dark'}
         </div>
 
         {user && (

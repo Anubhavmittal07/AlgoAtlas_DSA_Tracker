@@ -1,71 +1,49 @@
-import { useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import './App.css'
-import Content from './frontend/component/content'
+import Content from './frontend/component/Content'
 import Header from './frontend/component/Header'
 import { ThemeProvider } from './frontend/component/ThemeProvider'
+import { AuthProvider, useAuth } from './frontend/component/AuthContext'
 import Algo_page from './frontend/component/Algo_page'
 import Favour from './frontend/component/Favour'
-import Login from './frontend/component/Login'
-import Signup from './frontend/component/Signup'
+import DSATracker from './frontend/component/DSATracker'
+import AuthPage from './frontend/component/AuthPage'
+import { useState } from 'react'
 
-function App() {
-  const [favour, setfavour] = useState([]);
-  // Check if user is already stored (persists across refresh)
-  const [user, setUser] = useState(() => {
-    const stored = JSON.parse(localStorage.getItem('algoatlas_user') || 'null');
-    return stored || null;
-  });
+function Protected({ children }) {
+  const { user } = useAuth();
+  return user ? children : <Navigate to="/login" replace />;
+}
 
+function AppInner() {
+  const [favour, setFavour] = useState([]);
   const toggleFavour = (algo) => {
     const exists = favour.find(item => item.id === algo.id);
-    if (exists) {
-      setfavour(favour.filter(item => item.id !== algo.id));
-    } else {
-      setfavour([...favour, algo]);
-    }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('algoatlas_user');
-    setUser(null);
+    setFavour(exists ? favour.filter(item => item.id !== algo.id) : [...favour, algo]);
   };
 
   return (
     <ThemeProvider>
-      {user && <Header onLogout={handleLogout} user={user} />}
-
+      <Header />
       <Routes>
-        <Route
-          path="/login"
-          element={user ? <Navigate to="/" replace /> : <Login setUser={setUser} />}
-        />
-        <Route
-          path="/signup"
-          element={user ? <Navigate to="/" replace /> : <Signup setUser={setUser} />}
-        />
-        <Route
-          path="/"
-          element={user
-            ? <Content favour={favour} toggleFavour={toggleFavour} />
-            : <Navigate to="/login" replace />
-          }
-        />
-        <Route
-          path="/favour"
-          element={user
-            ? <Favour favour={favour} toggleFavour={toggleFavour} />
-            : <Navigate to="/login" replace />
-          }
-        />
-        <Route
-          path="/algo/:id"
-          element={user ? <Algo_page /> : <Navigate to="/login" replace />}
-        />
-        <Route path="*" element={<Navigate to={user ? "/" : "/login"} replace />} />
+        <Route path="/login"  element={<AuthPage />} />
+        <Route path="/signup" element={<AuthPage />} />
+        <Route path="/" element={<Protected><Content favour={favour} toggleFavour={toggleFavour} /></Protected>} />
+        <Route path="/favour" element={<Protected><Favour favour={favour} toggleFavour={toggleFavour} /></Protected>} />
+        <Route path="/algo/:id" element={<Protected><Algo_page /></Protected>} />
+        {/* <Route path="/tracker" element={<Protected><DSATracker /></Protected>} /> */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </ThemeProvider>
   );
 }
 
-export default App
+function App() {
+  return (
+    <AuthProvider>
+      <AppInner />
+    </AuthProvider>
+  );
+}
+
+export default App;

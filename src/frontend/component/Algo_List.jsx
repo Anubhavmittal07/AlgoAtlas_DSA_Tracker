@@ -1,11 +1,33 @@
 //images
 import bubbleImg from "../../assets/Bubble-Sort-Algorithm-930x620.png";
-import insertionImg from "../../assets/Insertion.jpg";
-import selectionImg from "../../assets/Selection.jpeg";
-import mergeImg from "../../assets/merge.jpeg";
-import quickImg from "../../assets/Quick.jpg";
-import heapImg from "../../assets/Heap.jpeg";
-import countingImg from "../../assets/counting_sort.jpeg";
+import insertionImg from "../../assets/Insertion.png";
+import selectionImg from "../../assets/Selection.png";
+import mergeImg from "../../assets/merge.png";
+import quickImg from "../../assets/Quick.png";
+import heapImg from "../../assets/Heap.png";
+import countingImg from "../../assets/counting_sort.png";
+import linearSearchImg from "../../assets/linear.png";
+import binarySearchImg from "../../assets/binary_search.png";
+import jumpSearchImg from "../../assets/jump_search.png";
+import interpolationSearchImg from "../../assets/interpolation.png";
+import exponentialSearchImg from "../../assets/exponential_search.png";
+import bfsImg from "../../assets/bfs.png";
+import dfsImg from "../../assets/dfs.png";
+import dijkstraImg from "../../assets/Dijkstra.png";
+import bellmanFordImg from "../../assets/bellman.png";
+import kruskalImg from "../../assets/Kruskal.png";
+import primImg from "../../assets/prims.png";
+import fibonacciDpImg from "../../assets/Fibonacci.png";
+import knapsackImg from "../../assets/1knapsack.png";
+import lcsImg from "../../assets/lcs.png";
+import lisImg from "../../assets/lis.png";
+import coinChangeImg from "../../assets/coinchnage.png";
+import editDistanceImg from "../../assets/editDistance.png";
+import inorderImg from "../../assets/inorder.png";
+import preorderImg from "../../assets/preorder.png";
+import postorderImg from "../../assets/postorder.png";
+import bstInsertImg from "../../assets/bst.png";
+import avlTreeImg from "../../assets/avl.png";
 
 export const sortingAlgorithms = [
     {
@@ -14,139 +36,492 @@ export const sortingAlgorithms = [
         shortDescription: "Swap adjacent elements if out of order.",
         description:
             "Bubble Sort repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order.",
-
         timeComplexity: { best: "O(n)", avg: "O(n^2)", worst: "O(n^2)" },
         spaceComplexity: "O(1)",
-
         stable: true,
         inPlace: true,
         category: "Comparison",
         difficulty: "Easy",
-
         isFavorite: false,
-
-        image: bubbleImg, // keep local for React
-
-        color: "#f59e0b", // UI theme per algorithm
+        image: bubbleImg,
+        color: "#f59e0b",
     },
-
     {
         id: "insertion",
         title: "Insertion Sort",
         shortDescription: "Insert element in correct position.",
         description:
             "Builds the final sorted array one item at a time by comparing and inserting elements into their correct position.",
-
         timeComplexity: { best: "O(n)", avg: "O(n^2)", worst: "O(n^2)" },
         spaceComplexity: "O(1)",
-
         stable: true,
         inPlace: true,
         category: "Comparison",
         difficulty: "Easy",
-
         isFavorite: false,
         image: insertionImg,
         color: "#10b981",
     },
-
     {
         id: "selection",
         title: "Selection Sort",
         shortDescription: "Select minimum and place at front.",
         description:
             "Repeatedly selects the minimum element from the unsorted portion and moves it to the sorted portion.",
-
         timeComplexity: { best: "O(n^2)", avg: "O(n^2)", worst: "O(n^2)" },
         spaceComplexity: "O(1)",
-
         stable: false,
         inPlace: true,
         category: "Comparison",
         difficulty: "Easy",
-
         isFavorite: false,
         image: selectionImg,
         color: "#3b82f6",
     },
-
     {
         id: "merge",
         title: "Merge Sort",
         shortDescription: "Divide and merge sorted halves.",
         description:
             "A divide-and-conquer algorithm that divides the array into halves, sorts them and merges them.",
-
         timeComplexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)" },
         spaceComplexity: "O(n)",
-
         stable: true,
         inPlace: false,
         category: "Comparison",
         difficulty: "Medium",
-
         isFavorite: false,
         image: mergeImg,
         color: "#8b5cf6",
     },
-
     {
         id: "quick",
         title: "Quick Sort",
         shortDescription: "Partition using pivot.",
         description:
             "Picks a pivot element and partitions the array such that smaller elements are on the left and larger on the right.",
-
         timeComplexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n^2)" },
         spaceComplexity: "O(log n)",
-
         stable: false,
         inPlace: true,
         category: "Comparison",
         difficulty: "Medium",
-
         isFavorite: false,
         image: quickImg,
         color: "#ef4444",
     },
-
     {
         id: "counting",
         title: "Counting Sort",
         shortDescription: "Count frequency of elements.",
         description:
             "Counts occurrences of each element and reconstructs the sorted array.",
-
         timeComplexity: { best: "O(n + k)", avg: "O(n + k)", worst: "O(n + k)" },
         spaceComplexity: "O(k)",
-
         stable: true,
         inPlace: false,
         category: "Non-Comparison",
         difficulty: "Medium",
-
         isFavorite: false,
-        image: countingImg, // placeholder, keep local for React
+        image: countingImg,
         color: "#14b8a6",
     },
-
     {
         id: "heap",
         title: "Heap Sort",
         shortDescription: "Use heap structure.",
         description:
             "Builds a heap and repeatedly extracts the maximum element.",
-
         timeComplexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)" },
         spaceComplexity: "O(1)",
-
         stable: false,
         inPlace: true,
         category: "Comparison",
         difficulty: "Medium",
-
         isFavorite: false,
         image: heapImg,
         color: "#6366f1",
-    }
+    },
+];
+
+
+export const searchingAlgorithms = [
+    {
+        id: "linear-search",
+        title: "Linear Search",
+        shortDescription: "Scan each element one by one.",
+        description:
+            "Sequentially checks each element of the list until a match is found or the whole list has been searched.",
+        timeComplexity: { best: "O(1)", avg: "O(n)", worst: "O(n)" },
+        spaceComplexity: "O(1)",
+        stable: true,
+        inPlace: true,
+        category: "Search",
+        difficulty: "Easy",
+        isFavorite: false,
+        image: linearSearchImg,
+        color: "#f59e0b",
+    },
+    {
+        id: "binary-search",
+        title: "Binary Search",
+        shortDescription: "Halve the search space each step.",
+        description:
+            "Efficiently finds a target value in a sorted array by repeatedly dividing the search interval in half.",
+        timeComplexity: { best: "O(1)", avg: "O(log n)", worst: "O(log n)" },
+        spaceComplexity: "O(1)",
+        stable: true,
+        inPlace: true,
+        category: "Search",
+        difficulty: "Easy",
+        isFavorite: false,
+        image: binarySearchImg,
+        color: "#3b82f6",
+    },
+    {
+        id: "jump-search",
+        title: "Jump Search",
+        shortDescription: "Jump ahead by fixed steps.",
+        description:
+            "Checks fewer elements by jumping ahead by fixed steps and then doing a linear search backwards.",
+        timeComplexity: { best: "O(1)", avg: "O(√n)", worst: "O(√n)" },
+        spaceComplexity: "O(1)",
+        stable: true,
+        inPlace: true,
+        category: "Search",
+        difficulty: "Medium",
+        isFavorite: false,
+        image: jumpSearchImg,
+        color: "#10b981",
+    },
+    {
+        id: "interpolation-search",
+        title: "Interpolation Search",
+        shortDescription: "Probe position by value estimate.",
+        description:
+            "Improved binary search that estimates the position of the target using an interpolation formula.",
+        timeComplexity: { best: "O(1)", avg: "O(log log n)", worst: "O(n)" },
+        spaceComplexity: "O(1)",
+        stable: true,
+        inPlace: true,
+        category: "Search",
+        difficulty: "Medium",
+        isFavorite: false,
+        image: interpolationSearchImg,
+        color: "#8b5cf6",
+    },
+    {
+        id: "exponential-search",
+        title: "Exponential Search",
+        shortDescription: "Exponentially grow range, then binary search.",
+        description:
+            "Finds the range where the element is present and then uses binary search within that range.",
+        timeComplexity: { best: "O(1)", avg: "O(log n)", worst: "O(log n)" },
+        spaceComplexity: "O(1)",
+        stable: true,
+        inPlace: true,
+        category: "Search",
+        difficulty: "Medium",
+        isFavorite: false,
+        image: exponentialSearchImg,
+        color: "#ef4444",
+    },
+];
+
+
+export const graphAlgorithms = [
+    {
+        id: "bfs",
+        title: "BFS",
+        shortDescription: "Explore level by level.",
+        description:
+            "Breadth-First Search explores all neighbors at the present depth before moving on to nodes at the next depth level.",
+        timeComplexity: { best: "O(V+E)", avg: "O(V+E)", worst: "O(V+E)" },
+        spaceComplexity: "O(V)",
+        stable: true,
+        inPlace: false,
+        category: "Graph",
+        difficulty: "Easy",
+        isFavorite: false,
+        image: bfsImg,
+        color: "#3b82f6",
+    },
+    {
+        id: "dfs",
+        title: "DFS",
+        shortDescription: "Explore as deep as possible first.",
+        description:
+            "Depth-First Search explores as far as possible along each branch before backtracking.",
+        timeComplexity: { best: "O(V+E)", avg: "O(V+E)", worst: "O(V+E)" },
+        spaceComplexity: "O(V)",
+        stable: true,
+        inPlace: false,
+        category: "Graph",
+        difficulty: "Easy",
+        isFavorite: false,
+        image: dfsImg,
+        color: "#10b981",
+    },
+    {
+        id: "dijkstra",
+        title: "Dijkstra's",
+        shortDescription: "Shortest path with non-negative weights.",
+        description:
+            "Finds the shortest path between nodes in a weighted graph with non-negative edge weights.",
+        timeComplexity: { best: "O(V^2)", avg: "O(V^2)", worst: "O(V^2)" },
+        spaceComplexity: "O(V)",
+        stable: false,
+        inPlace: false,
+        category: "Graph",
+        difficulty: "Medium",
+        isFavorite: false,
+        image: dijkstraImg,
+        color: "#f59e0b",
+    },
+    {
+        id: "bellman-ford",
+        title: "Bellman-Ford",
+        shortDescription: "Shortest path with negative weights.",
+        description:
+            "Computes shortest paths from a source vertex to all others, handling negative edge weights.",
+        timeComplexity: { best: "O(VE)", avg: "O(VE)", worst: "O(VE)" },
+        spaceComplexity: "O(V)",
+        stable: false,
+        inPlace: false,
+        category: "Graph",
+        difficulty: "Hard",
+        isFavorite: false,
+        image: bellmanFordImg,
+        color: "#ef4444",
+    },
+    {
+        id: "kruskal",
+        title: "Kruskal's MST",
+        shortDescription: "Build MST by cheapest edges.",
+        description:
+            "Finds a minimum spanning tree by greedily adding the cheapest edge that doesn't form a cycle.",
+        timeComplexity: { best: "O(E log E)", avg: "O(E log E)", worst: "O(E log E)" },
+        spaceComplexity: "O(V)",
+        stable: false,
+        inPlace: false,
+        category: "Graph",
+        difficulty: "Medium",
+        isFavorite: false,
+        image: kruskalImg,
+        color: "#8b5cf6",
+    },
+    {
+        id: "prim",
+        title: "Prim's MST",
+        shortDescription: "Grow MST from a starting vertex.",
+        description:
+            "Builds a minimum spanning tree by greedily growing it one vertex at a time from a starting node.",
+        timeComplexity: { best: "O(V^2)", avg: "O(V^2)", worst: "O(V^2)" },
+        spaceComplexity: "O(V)",
+        stable: false,
+        inPlace: false,
+        category: "Graph",
+        difficulty: "Medium",
+        isFavorite: false,
+        image: primImg,
+        color: "#14b8a6",
+    },
+];
+
+export const dpAlgorithms = [
+    {
+        id: "fibonacci-dp",
+        title: "Fibonacci (DP)",
+        shortDescription: "Memoized Fibonacci sequence.",
+        description:
+            "Computes Fibonacci numbers efficiently using memoization to avoid redundant calculations.",
+        timeComplexity: { best: "O(n)", avg: "O(n)", worst: "O(n)" },
+        spaceComplexity: "O(n)",
+        stable: true,
+        inPlace: false,
+        category: "DP",
+        difficulty: "Easy",
+        isFavorite: false,
+        image: fibonacciDpImg,
+        color: "#10b981",
+    },
+    {
+        id: "knapsack",
+        title: "0/1 Knapsack",
+        shortDescription: "Max value within weight limit.",
+        description:
+            "Selects items with maximum total value without exceeding a weight capacity. Each item is used at most once.",
+        timeComplexity: { best: "O(nW)", avg: "O(nW)", worst: "O(nW)" },
+        spaceComplexity: "O(nW)",
+        stable: false,
+        inPlace: false,
+        category: "DP",
+        difficulty: "Medium",
+        isFavorite: false,
+        image: knapsackImg,
+        color: "#f59e0b",
+    },
+    {
+        id: "lcs",
+        title: "LCS",
+        shortDescription: "Longest common subsequence.",
+        description:
+            "Finds the longest subsequence present in both sequences in the same order, not necessarily contiguous.",
+        timeComplexity: { best: "O(mn)", avg: "O(mn)", worst: "O(mn)" },
+        spaceComplexity: "O(mn)",
+        stable: true,
+        inPlace: false,
+        category: "DP",
+        difficulty: "Medium",
+        isFavorite: false,
+        image: lcsImg,
+        color: "#8b5cf6",
+    },
+    {
+        id: "lis",
+        title: "LIS",
+        shortDescription: "Longest increasing subsequence.",
+        description:
+            "Finds the length of the longest subsequence of a given sequence such that all elements are in increasing order.",
+        timeComplexity: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)" },
+        spaceComplexity: "O(n)",
+        stable: true,
+        inPlace: false,
+        category: "DP",
+        difficulty: "Medium",
+        isFavorite: false,
+        image: lisImg,
+        color: "#3b82f6",
+    },
+    {
+        id: "coin-change",
+        title: "Coin Change",
+        shortDescription: "Min coins to make a sum.",
+        description:
+            "Finds the minimum number of coins needed to make a given amount using available denominations.",
+        timeComplexity: { best: "O(n·amount)", avg: "O(n·amount)", worst: "O(n·amount)" },
+        spaceComplexity: "O(amount)",
+        stable: false,
+        inPlace: false,
+        category: "DP",
+        difficulty: "Medium",
+        isFavorite: false,
+        image: coinChangeImg,
+        color: "#ef4444",
+    },
+    {
+        id: "edit-distance",
+        title: "Edit Distance",
+        shortDescription: "Min edits to transform a string.",
+        description:
+            "Computes the minimum number of single-character edits (insert, delete, replace) to transform one string into another.",
+        timeComplexity: { best: "O(mn)", avg: "O(mn)", worst: "O(mn)" },
+        spaceComplexity: "O(mn)",
+        stable: true,
+        inPlace: false,
+        category: "DP",
+        difficulty: "Hard",
+        isFavorite: false,
+        image: editDistanceImg,
+        color: "#14b8a6",
+    },
+];
+
+export const treeAlgorithms = [
+    {
+        id: "inorder",
+        title: "Inorder Traversal",
+        shortDescription: "Left → Root → Right.",
+        description:
+            "Visits nodes in left-root-right order. Produces sorted output for a BST.",
+        timeComplexity: { best: "O(n)", avg: "O(n)", worst: "O(n)" },
+        spaceComplexity: "O(h)",
+        stable: true,
+        inPlace: false,
+        category: "Tree",
+        difficulty: "Easy",
+        isFavorite: false,
+        image: inorderImg,
+        color: "#10b981",
+    },
+    {
+        id: "preorder",
+        title: "Preorder Traversal",
+        shortDescription: "Root → Left → Right.",
+        description:
+            "Visits the root first, then the left subtree, then the right subtree. Useful for copying trees.",
+        timeComplexity: { best: "O(n)", avg: "O(n)", worst: "O(n)" },
+        spaceComplexity: "O(h)",
+        stable: true,
+        inPlace: false,
+        category: "Tree",
+        difficulty: "Easy",
+        isFavorite: false,
+        image: preorderImg,
+        color: "#f59e0b",
+    },
+    {
+        id: "postorder",
+        title: "Postorder Traversal",
+        shortDescription: "Left → Right → Root.",
+        description:
+            "Visits left subtree, right subtree, then root. Useful for deleting trees.",
+        timeComplexity: { best: "O(n)", avg: "O(n)", worst: "O(n)" },
+        spaceComplexity: "O(h)",
+        stable: true,
+        inPlace: false,
+        category: "Tree",
+        difficulty: "Easy",
+        isFavorite: false,
+        image: postorderImg,
+        color: "#3b82f6",
+    },
+    {
+        id: "bst-insert",
+        title: "BST Insert",
+        shortDescription: "Insert into binary search tree.",
+        description:
+            "Inserts a new key into a binary search tree while maintaining the BST property.",
+        timeComplexity: { best: "O(log n)", avg: "O(log n)", worst: "O(n)" },
+        spaceComplexity: "O(h)",
+        stable: true,
+        inPlace: true,
+        category: "Tree",
+        difficulty: "Easy",
+        isFavorite: false,
+        image: bstInsertImg,
+        color: "#8b5cf6",
+    },
+    {
+        id: "avl-tree",
+        title: "AVL Tree",
+        shortDescription: "Self-balancing BST.",
+        description:
+            "A self-balancing binary search tree where heights of subtrees differ by at most 1, ensuring O(log n) operations.",
+        timeComplexity: { best: "O(log n)", avg: "O(log n)", worst: "O(log n)" },
+        spaceComplexity: "O(n)",
+        stable: true,
+        inPlace: true,
+        category: "Tree",
+        difficulty: "Hard",
+        isFavorite: false,
+        image: avlTreeImg,
+        color: "#ef4444",
+    },
+];
+
+export const allCategories = [
+    { key: "sorting",   label: "Sorting",            icon: "↕",  algos: sortingAlgorithms   },
+    { key: "searching", label: "Searching",           icon: "🔍", algos: searchingAlgorithms },
+    { key: "graph",     label: "Graph",               icon: "◎",  algos: graphAlgorithms     },
+    { key: "dp",        label: "Dynamic Programming", icon: "⊞",  algos: dpAlgorithms        },
+    { key: "tree",      label: "Tree",                icon: "🌲", algos: treeAlgorithms      },
+];
+
+export const allAlgos = [
+    ...sortingAlgorithms,
+    ...searchingAlgorithms,
+    ...graphAlgorithms,
+    ...dpAlgorithms,
+    ...treeAlgorithms,
 ];

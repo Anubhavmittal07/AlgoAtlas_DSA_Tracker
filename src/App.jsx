@@ -31,7 +31,7 @@ function AppInner() {
         <Route path="/" element={<Protected><Content favour={favour} toggleFavour={toggleFavour} /></Protected>} />
         <Route path="/favour" element={<Protected><Favour favour={favour} toggleFavour={toggleFavour} /></Protected>} />
         <Route path="/algo/:id" element={<Protected><Algo_page /></Protected>} />
-        {/* <Route path="/tracker" element={<Protected><DSATracker /></Protected>} /> */}
+        <Route path="/tracker" element={<Protected><DSATracker /></Protected>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </ThemeProvider>

@@ -1,4 +1,6 @@
+
 import { useState, useEffect } from "react";
+import "./DSATracker.css";
 
 const TAGS = ["Array", "String", "Tree", "Graph", "DP", "Sorting", "Searching", "Greedy", "Backtracking", "Other"];
 const DIFFICULTIES = ["Easy", "Medium", "Hard"];
@@ -89,157 +91,124 @@ export default function DSATracker() {
 
   const pct = stats.total ? Math.round((stats.done / stats.total) * 100) : 0;
 
-  const inputStyle = {
-    width: "100%", padding: "8px 12px", borderRadius: 8,
-    border: "1px solid rgba(255,255,255,0.15)", background: "var(--card-bg)",
-    color: "var(--card-text-color)", fontSize: 13, outline: "none", boxSizing: "border-box",
-  };
-
-  const selectStyle = { ...inputStyle };
-
   return (
-    <div style={{ maxWidth: 860, margin: "0 auto", padding: "2rem 1.2rem 4rem", fontFamily: "'Segoe UI', system-ui, sans-serif", color: "var(--card-text-color)" }}>
+    <div className="dsa-wrapper">
 
       {/* ── Header ── */}
-      <div style={{ marginBottom: "1.8rem", display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12 }}>
+      <div className="dsa-header">
         <div>
-          <h1 style={{ fontSize: 26, fontWeight: 800, margin: "0 0 4px" }}>DSA Practice Tracker</h1>
-          <p style={{ fontSize: 13, opacity: 0.55, margin: 0 }}>Track your questions, mark progress, add notes</p>
+          <h1>DSA Practice Tracker</h1>
+          <p>Track your questions, mark progress, add notes</p>
         </div>
-        <button
-          onClick={openAdd}
-          style={{
-            padding: "9px 18px", borderRadius: 9, border: "none",
-            background: "#3b82f6", color: "#fff",
-            fontWeight: 700, fontSize: 13, cursor: "pointer",
-          }}
-        >
-          + Add Question
-        </button>
+        <button onClick={openAdd} className="dsa-add-btn">+ Add Question</button>
       </div>
 
       {/* ── Stats ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: "1.4rem" }}>
+      <div className="dsa-stats">
         {[
           ["Total", stats.total, "#3b82f6"],
           ["Done", stats.done, "#10b981"],
           ["In Progress", stats.inProgress, "#f59e0b"],
           ["To Do", stats.todo, "#8b5cf6"],
         ].map(([label, val, col]) => (
-          <div key={label} style={{ background: col + "14", border: `1px solid ${col}33`, borderRadius: 10, padding: "10px 14px", textAlign: "center" }}>
-            <div style={{ fontSize: 11, color: col, opacity: 0.8, marginBottom: 3 }}>{label}</div>
-            <div style={{ fontSize: 22, fontWeight: 800, color: col }}>{val}</div>
+          <div
+            key={label}
+            className="dsa-stat-card"
+            style={{ background: col + "14", border: `1px solid ${col}33` }}
+          >
+            <div className="dsa-stat-label" style={{ color: col }}>{label}</div>
+            <div className="dsa-stat-value" style={{ color: col }}>{val}</div>
           </div>
         ))}
       </div>
 
       {/* ── Progress bar ── */}
-      <div style={{ marginBottom: "1.6rem" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, opacity: 0.6, marginBottom: 5 }}>
+      <div className="dsa-progress-wrap">
+        <div className="dsa-progress-meta">
           <span>Overall Progress</span>
           <span>{pct}%</span>
         </div>
-        <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: 10, height: 8, overflow: "hidden" }}>
-          <div style={{
-            width: `${pct}%`, height: "100%", borderRadius: 10,
-            background: "linear-gradient(90deg, #3b82f6, #10b981)",
-            transition: "width 0.5s ease",
-          }} />
+        <div className="dsa-progress-track">
+          <div className="dsa-progress-fill" style={{ width: `${pct}%` }} />
         </div>
       </div>
 
       {/* ── Filters ── */}
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: "1rem", alignItems: "center" }}>
+      <div className="dsa-filters">
         <input
           value={search}
           onChange={e => setSearch(e.target.value)}
           placeholder="🔍 Search questions..."
-          style={{ ...inputStyle, maxWidth: 220, flex: 1 }}
+          className="dsa-input dsa-input--search"
         />
         {[
           ["Status", ["All", ...STATUSES], filterStatus, setFilterStatus],
           ["Difficulty", ["All", ...DIFFICULTIES], filterDiff, setFilterDiff],
           ["Tag", ["All", ...TAGS], filterTag, setFilterTag],
         ].map(([placeholder, opts, val, setter]) => (
-          <select key={placeholder} value={val} onChange={e => setter(e.target.value)} style={{ ...selectStyle, maxWidth: 140 }}>
+          <select key={placeholder} value={val} onChange={e => setter(e.target.value)} className="dsa-input dsa-select dsa-select--filter">
             {opts.map(o => <option key={o} value={o}>{o}</option>)}
           </select>
         ))}
       </div>
 
       {/* ── Task list ── */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      <div className="dsa-task-list">
         {filtered.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "3rem", opacity: 0.4, fontSize: 14 }}>
-            No questions found. Add your first one!
-          </div>
+          <div className="dsa-empty">No questions found. Add your first one!</div>
         ) : (
           filtered.map(task => (
-            <div key={task.id} style={{
-              background: "var(--card-bg)", border: "1px solid rgba(255,255,255,0.07)",
-              borderRadius: 12, padding: "12px 16px",
-              display: "grid", gridTemplateColumns: "1fr auto",
-              gap: 12, alignItems: "start",
-              borderLeft: `3px solid ${STATUS_COLOR[task.status]}`,
-              transition: "opacity 0.2s",
-              opacity: task.status === "Done" ? 0.75 : 1,
-            }}>
+            <div
+              key={task.id}
+              className={`dsa-task-card ${task.status === "Done" ? "dsa-task-card--done" : ""}`}
+              style={{ borderLeft: `3px solid ${STATUS_COLOR[task.status]}` }}
+            >
               <div>
                 {/* Title row */}
-                <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginBottom: 6 }}>
-                  <span style={{
-                    fontSize: 14, fontWeight: 600,
-                    textDecoration: task.status === "Done" ? "line-through" : "none",
-                    opacity: task.status === "Done" ? 0.7 : 1,
-                  }}>
+                <div className="dsa-task-title-row">
+                  <span className={`dsa-task-title ${task.status === "Done" ? "dsa-task-title--done" : ""}`}>
                     {task.title}
                   </span>
                   {task.link && (
-                    <a href={task.link} target="_blank" rel="noreferrer" style={{ fontSize: 11, color: "#3b82f6", textDecoration: "none" }}>↗ LeetCode</a>
+                    <a href={task.link} target="_blank" rel="noreferrer" className="dsa-task-link">↗ LeetCode</a>
                   )}
                 </div>
 
                 {/* Badges */}
-                <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: task.note ? 8 : 0 }}>
-                  <span style={{
-                    fontSize: 10, padding: "2px 8px", borderRadius: 20,
-                    background: DIFF_COLOR[task.difficulty] + "22",
-                    color: DIFF_COLOR[task.difficulty],
-                    border: `1px solid ${DIFF_COLOR[task.difficulty]}44`,
-                  }}>{task.difficulty}</span>
-                  <span style={{
-                    fontSize: 10, padding: "2px 8px", borderRadius: 20,
-                    background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
-                  }}>{task.tag}</span>
-                  <span style={{
-                    fontSize: 10, padding: "2px 8px", borderRadius: 20,
-                    background: STATUS_BG[task.status],
-                    color: STATUS_COLOR[task.status],
-                    border: `1px solid ${STATUS_COLOR[task.status]}44`,
-                    cursor: "pointer",
-                  }} onClick={() => cycleStatus(task.id)} title="Click to cycle status">
+                <div className={`dsa-badges ${task.note ? "dsa-badges--with-note" : ""}`}>
+                  <span
+                    className="dsa-badge"
+                    style={{
+                      background: DIFF_COLOR[task.difficulty] + "22",
+                      color: DIFF_COLOR[task.difficulty],
+                      border: `1px solid ${DIFF_COLOR[task.difficulty]}44`,
+                    }}
+                  >{task.difficulty}</span>
+                  <span className="dsa-badge dsa-badge--tag">{task.tag}</span>
+                  <span
+                    className="dsa-badge dsa-badge--status"
+                    style={{
+                      background: STATUS_BG[task.status],
+                      color: STATUS_COLOR[task.status],
+                      border: `1px solid ${STATUS_COLOR[task.status]}44`,
+                    }}
+                    onClick={() => cycleStatus(task.id)}
+                    title="Click to cycle status"
+                  >
                     {task.status} ↻
                   </span>
                 </div>
 
                 {/* Note */}
                 {task.note && (
-                  <div style={{ fontSize: 12, opacity: 0.55, lineHeight: 1.5, fontStyle: "italic" }}>
-                    📝 {task.note}
-                  </div>
+                  <div className="dsa-task-note">📝 {task.note}</div>
                 )}
               </div>
 
               {/* Action buttons */}
-              <div style={{ display: "flex", gap: 6 }}>
-                <button onClick={() => openEdit(task)} style={{
-                  padding: "5px 10px", borderRadius: 7, border: "1px solid rgba(255,255,255,0.15)",
-                  background: "transparent", color: "var(--card-text-color)", fontSize: 12, cursor: "pointer",
-                }}>Edit</button>
-                <button onClick={() => deleteTask(task.id)} style={{
-                  padding: "5px 10px", borderRadius: 7, border: "1px solid #ef444433",
-                  background: "#ef444414", color: "#ef4444", fontSize: 12, cursor: "pointer",
-                }}>Del</button>
+              <div className="dsa-task-actions">
+                <button onClick={() => openEdit(task)} className="dsa-btn-edit">Edit</button>
+                <button onClick={() => deleteTask(task.id)} className="dsa-btn-delete">Del</button>
               </div>
             </div>
           ))
@@ -249,38 +218,27 @@ export default function DSATracker() {
       {/* ── Add/Edit Modal ── */}
       {showForm && (
         <div
+          className="dsa-modal-overlay"
           onClick={e => { if (e.target === e.currentTarget) setShowForm(false); }}
-          style={{
-            position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            zIndex: 1000, padding: "1rem",
-          }}
         >
-          <div style={{
-            background: "var(--navbar-bg)", borderRadius: 16, padding: "1.6rem",
-            width: "100%", maxWidth: 480,
-            border: "1px solid rgba(255,255,255,0.1)",
-            display: "flex", flexDirection: "column", gap: 12,
-          }}>
-            <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700 }}>
-              {editId ? "Edit Question" : "Add Question"}
-            </h2>
+          <div className="dsa-modal">
+            <h2>{editId ? "Edit Question" : "Add Question"}</h2>
 
             <input
               value={form.title}
               onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
               placeholder="Question title *"
-              style={inputStyle}
+              className="dsa-input"
             />
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
-              <select value={form.tag} onChange={e => setForm(f => ({ ...f, tag: e.target.value }))} style={selectStyle}>
+            <div className="dsa-modal-grid">
+              <select value={form.tag} onChange={e => setForm(f => ({ ...f, tag: e.target.value }))} className="dsa-input dsa-select">
                 {TAGS.map(t => <option key={t}>{t}</option>)}
               </select>
-              <select value={form.difficulty} onChange={e => setForm(f => ({ ...f, difficulty: e.target.value }))} style={selectStyle}>
+              <select value={form.difficulty} onChange={e => setForm(f => ({ ...f, difficulty: e.target.value }))} className="dsa-input dsa-select">
                 {DIFFICULTIES.map(d => <option key={d}>{d}</option>)}
               </select>
-              <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))} style={selectStyle}>
+              <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))} className="dsa-input dsa-select">
                 {STATUSES.map(s => <option key={s}>{s}</option>)}
               </select>
             </div>
@@ -289,7 +247,7 @@ export default function DSATracker() {
               value={form.link}
               onChange={e => setForm(f => ({ ...f, link: e.target.value }))}
               placeholder="LeetCode / GFG link (optional)"
-              style={inputStyle}
+              className="dsa-input"
             />
 
             <textarea
@@ -297,18 +255,12 @@ export default function DSATracker() {
               onChange={e => setForm(f => ({ ...f, note: e.target.value }))}
               placeholder="Notes, approach, hints... (optional)"
               rows={3}
-              style={{ ...inputStyle, resize: "vertical" }}
+              className="dsa-input dsa-textarea"
             />
 
-            <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
-              <button onClick={() => setShowForm(false)} style={{
-                padding: "8px 18px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.15)",
-                background: "transparent", color: "var(--card-text-color)", fontSize: 13, cursor: "pointer",
-              }}>Cancel</button>
-              <button onClick={handleSubmit} style={{
-                padding: "8px 18px", borderRadius: 8, border: "none",
-                background: "#3b82f6", color: "#fff", fontWeight: 700, fontSize: 13, cursor: "pointer",
-              }}>{editId ? "Save Changes" : "Add"}</button>
+            <div className="dsa-modal-actions">
+              <button onClick={() => setShowForm(false)} className="dsa-btn-cancel">Cancel</button>
+              <button onClick={handleSubmit} className="dsa-btn-submit">{editId ? "Save Changes" : "Add"}</button>
             </div>
           </div>
         </div>

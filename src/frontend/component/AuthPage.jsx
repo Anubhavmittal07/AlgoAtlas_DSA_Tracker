@@ -1,30 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
-
-
-const INPUT = {
-  width: "100%",
-  padding: "11px 14px",
-  borderRadius: 10,
-  border: "1px solid rgba(255,255,255,0.15)",
-  background: "rgba(255,255,255,0.06)",
-  color: "var(--primary-color)",
-  fontSize: 14,
-  outline: "none",
-  boxSizing: "border-box",
-  transition: "border-color 0.2s",
-  fontFamily: "inherit",
-};
-
-const focusStyle = { borderColor: "rgba(99,102,241,0.8)" };
+import "./AuthPage.css";
 
 export default function AuthPage() {
   const [mode, setMode] = useState("login"); // "login" | "signup"
   const [form, setForm] = useState({ name: "", email: "", password: "", confirm: "" });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [focused, setFocused] = useState("");
   const { login, signup } = useAuth();
   const navigate = useNavigate();
 
@@ -74,65 +57,34 @@ export default function AuthPage() {
   const isLogin = mode === "login";
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "2rem 1rem",
-      position: "relative",
-      overflow: "hidden",
-    }}>
-
-
+    <div className="auth-page-container">
       {/* ── Card ── */}
-      <div style={{
-        position: "relative", zIndex: 1,
-        width: "100%", maxWidth: 420,
-        background: "var(--card-bg)",
-        border: "1px solid rgba(255,255,255,0.1)",
-        borderRadius: 20,
-        padding: "2.4rem 2rem",
-        backdropFilter: "blur(12px)",
-        boxShadow: "0 8px 40px rgba(0,0,0,0.35)",
-      }}>
+      <div className="auth-card">
 
         {/* Logo + brand */}
-        <div style={{ textAlign: "center", marginBottom: "1.8rem" }}>
-          <div style={{
-            width: 52, height: 52, borderRadius: 14,
-            background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            margin: "0 auto 12px", fontSize: 24,
-          }}>⚡</div>
-          <h1 style={{ fontSize: 22, fontWeight: 800, margin: "0 0 4px", color: "var(--primary-color)" }}>AlgoAtlas</h1>
-          <p style={{ fontSize: 13, opacity: 0.5, margin: 0 }}>
+        <div className="auth-header">
+          <div className="auth-logo-icon">⚡</div>
+          <h1 className="auth-title">AlgoAtlas</h1>
+          <p className="auth-subtitle">
             {isLogin ? "Welcome back! Sign in to continue." : "Create your free account."}
           </p>
         </div>
 
         {/* Mode toggle */}
-        <div style={{ display: "flex", background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: 4, marginBottom: "1.6rem", border: "1px solid rgba(255,255,255,0.08)" }}>
+        <div className="auth-toggle-container">
           {["login", "signup"].map(m => (
-            <button key={m} onClick={() => switchMode(m)} style={{
-              flex: 1, padding: "8px 0", borderRadius: 8, border: "none", cursor: "pointer",
-              background: mode === m ? "#6366f1" : "transparent",
-              color: mode === m ? "#fff" : "var(--primary-color)",
-              fontWeight: mode === m ? 700 : 400,
-              fontSize: 13, transition: "all 0.2s",
-              opacity: mode === m ? 1 : 0.55,
-            }}>
+            <button key={m} onClick={() => switchMode(m)} className={`auth-toggle-btn ${mode === m ? 'active' : ''}`}>
               {m === "login" ? "Log In" : "Sign Up"}
             </button>
           ))}
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        <form onSubmit={handleSubmit} className="auth-form">
 
           {/* General error */}
           {errors.general && (
-            <div style={{ background: "#ef444420", border: "1px solid #ef444455", borderRadius: 9, padding: "10px 13px", fontSize: 13, color: "#ef4444" }}>
+            <div className="auth-general-error">
               ⚠ {errors.general}
             </div>
           )}
@@ -140,53 +92,48 @@ export default function AuthPage() {
           {/* Name — signup only */}
           {!isLogin && (
             <div>
-              <label style={{ fontSize: 12, opacity: 0.6, marginBottom: 5, display: "block" }}>Full Name</label>
+              <label className="auth-input-label">Full Name</label>
               <input
                 type="text" placeholder="Rahul Sharma"
                 value={form.name} onChange={e => set("name", e.target.value)}
-                onFocus={() => setFocused("name")} onBlur={() => setFocused("")}
-                style={{ ...INPUT, ...(focused === "name" ? focusStyle : {}), borderColor: errors.name ? "#ef4444" : undefined }}
+                className={`auth-input ${errors.name ? 'error' : ''}`}
               />
-              {errors.name && <div style={{ fontSize: 11, color: "#ef4444", marginTop: 4 }}>{errors.name}</div>}
+              {errors.name && <div className="auth-field-error">{errors.name}</div>}
             </div>
           )}
 
           {/* Email */}
           <div>
-            <label style={{ fontSize: 12, opacity: 0.6, marginBottom: 5, display: "block" }}>Email</label>
+            <label className="auth-input-label">Email</label>
             <input
               type="email" placeholder="you@example.com"
               value={form.email} onChange={e => set("email", e.target.value)}
-              onFocus={() => setFocused("email")} onBlur={() => setFocused("")}
-              style={{ ...INPUT, ...(focused === "email" ? focusStyle : {}), borderColor: errors.email ? "#ef4444" : undefined }}
+              className={`auth-input ${errors.email ? 'error' : ''}`}
             />
-            {errors.email && <div style={{ fontSize: 11, color: "#ef4444", marginTop: 4 }}>{errors.email}</div>}
+            {errors.email && <div className="auth-field-error">{errors.email}</div>}
           </div>
 
           {/* Password */}
           <div>
-            <label style={{ fontSize: 12, opacity: 0.6, marginBottom: 5, display: "block" }}>Password</label>
+            <label className="auth-input-label">Password</label>
             <input
               type="password" placeholder="Min 6 characters"
               value={form.password} onChange={e => set("password", e.target.value)}
-              onFocus={() => setFocused("password")} onBlur={() => setFocused("")}
-              style={{ ...INPUT, ...(focused === "password" ? focusStyle : {}), borderColor: errors.password ? "#ef4444" : undefined }}
+              className={`auth-input ${errors.password ? 'error' : ''}`}
             />
-            {errors.password && <div style={{ fontSize: 11, color: "#ef4444", marginTop: 4 }}>{errors.password}</div>}
-
+            {errors.password && <div className="auth-field-error">{errors.password}</div>}
           </div>
 
           {/* Confirm password — signup only */}
           {!isLogin && (
             <div>
-              <label style={{ fontSize: 12, opacity: 0.6, marginBottom: 5, display: "block" }}>Confirm Password</label>
+              <label className="auth-input-label">Confirm Password</label>
               <input
                 type="password" placeholder="Repeat your password"
                 value={form.confirm} onChange={e => set("confirm", e.target.value)}
-                onFocus={() => setFocused("confirm")} onBlur={() => setFocused("")}
-                style={{ ...INPUT, ...(focused === "confirm" ? focusStyle : {}), borderColor: errors.confirm ? "#ef4444" : undefined }}
+                className={`auth-input ${errors.confirm ? 'error' : ''}`}
               />
-              {errors.confirm && <div style={{ fontSize: 11, color: "#ef4444", marginTop: 4 }}>{errors.confirm}</div>}
+              {errors.confirm && <div className="auth-field-error">{errors.confirm}</div>}
             </div>
           )}
 
@@ -194,15 +141,7 @@ export default function AuthPage() {
           <button
             type="submit"
             disabled={loading}
-            style={{
-              width: "100%", padding: "12px", borderRadius: 10, border: "none",
-              background: loading ? "rgba(99,102,241,0.5)" : "linear-gradient(135deg, #6366f1, #8b5cf6)",
-              color: "#fff", fontWeight: 700, fontSize: 15,
-              cursor: loading ? "not-allowed" : "pointer",
-              marginTop: 4, letterSpacing: "0.02em",
-              transition: "opacity 0.2s, transform 0.1s",
-              transform: loading ? "scale(0.98)" : "scale(1)",
-            }}
+            className="auth-submit-btn"
           >
             {loading
               ? "Please wait..."
@@ -212,11 +151,11 @@ export default function AuthPage() {
         </form>
 
         {/* Bottom switch */}
-        <p style={{ textAlign: "center", fontSize: 13, opacity: 0.5, marginTop: "1.4rem", marginBottom: 0 }}>
+        <p className="auth-bottom-text">
           {isLogin ? "Don't have an account? " : "Already have an account? "}
           <span
             onClick={() => switchMode(isLogin ? "signup" : "login")}
-            style={{ color: "#6366f1", cursor: "pointer", fontWeight: 600, opacity: 1 }}
+            className="auth-bottom-link"
           >
             {isLogin ? "Sign up" : "Log in"}
           </span>

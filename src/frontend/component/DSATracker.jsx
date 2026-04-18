@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import "./DSATracker.css";
 
@@ -34,6 +33,16 @@ export default function DSATracker() {
   const [filterTag, setFilterTag] = useState("All");
   const [search, setSearch] = useState("");
   const [form, setForm] = useState({ title: "", tag: "Array", difficulty: "Easy", status: "To Do", note: "", link: "" });
+
+  // ── Revision State ──
+  const [showRevision, setShowRevision] = useState(false);
+  const [revisionCount, setRevisionCount] = useState(2);
+  const [revisionTag, setRevisionTag] = useState("All");
+  const [revisionDiff, setRevisionDiff] = useState("All");
+  const [revisionQuestions, setRevisionQuestions] = useState([]);
+  const [revisionStarted, setRevisionStarted] = useState(false);
+  const [currentRevIdx, setCurrentRevIdx] = useState(0);
+  const [revisionDone, setRevisionDone] = useState(false);
 
   useEffect(() => {
     try { localStorage.setItem("dsa_tasks", JSON.stringify(tasks)); } catch {}
@@ -74,6 +83,41 @@ export default function DSATracker() {
     }));
   }
 
+  // ── Revision Logic ──
+  function startRevision() {
+    let pool = tasks.filter(t => t.status === "Done");
+    if (revisionTag !== "All") pool = pool.filter(t => t.tag === revisionTag);
+    if (revisionDiff !== "All") pool = pool.filter(t => t.difficulty === revisionDiff);
+
+    if (pool.length === 0) {
+      alert("No Done questions found for selected filters!");
+      return;
+    }
+
+    // Shuffle and pick
+    const shuffled = [...pool].sort(() => Math.random() - 0.5);
+    const picked = shuffled.slice(0, Math.min(revisionCount, pool.length));
+    setRevisionQuestions(picked);
+    setCurrentRevIdx(0);
+    setRevisionDone(false);
+    setRevisionStarted(true);
+  }
+
+  function nextRevision() {
+    if (currentRevIdx + 1 >= revisionQuestions.length) {
+      setRevisionDone(true);
+    } else {
+      setCurrentRevIdx(i => i + 1);
+    }
+  }
+
+  function resetRevision() {
+    setRevisionStarted(false);
+    setRevisionQuestions([]);
+    setCurrentRevIdx(0);
+    setRevisionDone(false);
+  }
+
   const filtered = tasks.filter(t => {
     const matchSearch = t.title.toLowerCase().includes(search.toLowerCase()) || t.tag.toLowerCase().includes(search.toLowerCase());
     const matchStatus = filterStatus === "All" || t.status === filterStatus;
@@ -90,6 +134,7 @@ export default function DSATracker() {
   };
 
   const pct = stats.total ? Math.round((stats.done / stats.total) * 100) : 0;
+  const currentQ = revisionQuestions[currentRevIdx];
 
   return (
     <div className="dsa-wrapper">
@@ -100,7 +145,10 @@ export default function DSATracker() {
           <h1>DSA Practice Tracker</h1>
           <p>Track your questions, mark progress, add notes</p>
         </div>
-        <button onClick={openAdd} className="dsa-add-btn">+ Add Question</button>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <button onClick={() => { setShowRevision(true); resetRevision(); }} className="dsa-add-btn" style={{ background: "#8b5cf6" }}>🔁 Revise</button>
+          <button onClick={openAdd} className="dsa-add-btn">+ Add Question</button>
+        </div>
       </div>
 
       {/* ── Stats ── */}
@@ -111,11 +159,7 @@ export default function DSATracker() {
           ["In Progress", stats.inProgress, "#f59e0b"],
           ["To Do", stats.todo, "#8b5cf6"],
         ].map(([label, val, col]) => (
-          <div
-            key={label}
-            className="dsa-stat-card"
-            style={{ background: col + "14", border: `1px solid ${col}33` }}
-          >
+          <div key={label} className="dsa-stat-card" style={{ background: col + "14", border: `1px solid ${col}33` }}>
             <div className="dsa-stat-label" style={{ color: col }}>{label}</div>
             <div className="dsa-stat-value" style={{ color: col }}>{val}</div>
           </div>
@@ -164,7 +208,6 @@ export default function DSATracker() {
               style={{ borderLeft: `3px solid ${STATUS_COLOR[task.status]}` }}
             >
               <div>
-                {/* Title row */}
                 <div className="dsa-task-title-row">
                   <span className={`dsa-task-title ${task.status === "Done" ? "dsa-task-title--done" : ""}`}>
                     {task.title}
@@ -173,39 +216,15 @@ export default function DSATracker() {
                     <a href={task.link} target="_blank" rel="noreferrer" className="dsa-task-link">↗ LeetCode</a>
                   )}
                 </div>
-
-                {/* Badges */}
                 <div className={`dsa-badges ${task.note ? "dsa-badges--with-note" : ""}`}>
-                  <span
-                    className="dsa-badge"
-                    style={{
-                      background: DIFF_COLOR[task.difficulty] + "22",
-                      color: DIFF_COLOR[task.difficulty],
-                      border: `1px solid ${DIFF_COLOR[task.difficulty]}44`,
-                    }}
-                  >{task.difficulty}</span>
+                  <span className="dsa-badge" style={{ background: DIFF_COLOR[task.difficulty] + "22", color: DIFF_COLOR[task.difficulty], border: `1px solid ${DIFF_COLOR[task.difficulty]}44` }}>{task.difficulty}</span>
                   <span className="dsa-badge dsa-badge--tag">{task.tag}</span>
-                  <span
-                    className="dsa-badge dsa-badge--status"
-                    style={{
-                      background: STATUS_BG[task.status],
-                      color: STATUS_COLOR[task.status],
-                      border: `1px solid ${STATUS_COLOR[task.status]}44`,
-                    }}
-                    onClick={() => cycleStatus(task.id)}
-                    title="Click to cycle status"
-                  >
+                  <span className="dsa-badge dsa-badge--status" style={{ background: STATUS_BG[task.status], color: STATUS_COLOR[task.status], border: `1px solid ${STATUS_COLOR[task.status]}44` }} onClick={() => cycleStatus(task.id)} title="Click to cycle status">
                     {task.status} ↻
                   </span>
                 </div>
-
-                {/* Note */}
-                {task.note && (
-                  <div className="dsa-task-note">📝 {task.note}</div>
-                )}
+                {task.note && <div className="dsa-task-note">📝 {task.note}</div>}
               </div>
-
-              {/* Action buttons */}
               <div className="dsa-task-actions">
                 <button onClick={() => openEdit(task)} className="dsa-btn-edit">Edit</button>
                 <button onClick={() => deleteTask(task.id)} className="dsa-btn-delete">Del</button>
@@ -215,22 +234,109 @@ export default function DSATracker() {
         )}
       </div>
 
+      {/* ── Revision Modal ── */}
+      {showRevision && (
+        <div className="dsa-modal-overlay" onClick={e => { if (e.target === e.currentTarget) { setShowRevision(false); resetRevision(); } }}>
+          <div className="dsa-modal" style={{ maxWidth: "500px" }}>
+
+            {!revisionStarted ? (
+              <>
+                <h2>🔁 Smart Revision</h2>
+                <p style={{ color: "#9ca3af", marginBottom: "16px", fontSize: "14px" }}>
+                  Select filters and number of questions to revise from your <strong style={{ color: "#10b981" }}>Done</strong> list randomly.
+                </p>
+
+                <label style={{ color: "#9ca3af", fontSize: "13px" }}>Number of Questions</label>
+                <input
+                  type="number"
+                  min={1}
+                  max={stats.done}
+                  value={revisionCount}
+                  onChange={e => setRevisionCount(Number(e.target.value))}
+                  className="dsa-input"
+                  style={{ marginBottom: "12px" }}
+                />
+
+                <label style={{ color: "#9ca3af", fontSize: "13px" }}>Topic (optional)</label>
+                <select value={revisionTag} onChange={e => setRevisionTag(e.target.value)} className="dsa-input dsa-select" style={{ marginBottom: "12px" }}>
+                  {["All", ...TAGS].map(t => <option key={t}>{t}</option>)}
+                </select>
+
+                <label style={{ color: "#9ca3af", fontSize: "13px" }}>Difficulty (optional)</label>
+                <select value={revisionDiff} onChange={e => setRevisionDiff(e.target.value)} className="dsa-input dsa-select" style={{ marginBottom: "20px" }}>
+                  {["All", ...DIFFICULTIES].map(d => <option key={d}>{d}</option>)}
+                </select>
+
+                <div style={{ background: "#10b98115", border: "1px solid #10b98133", borderRadius: "8px", padding: "10px 14px", marginBottom: "20px", fontSize: "13px", color: "#10b981" }}>
+                  ✅ {stats.done} Done questions available for revision
+                </div>
+
+                <div className="dsa-modal-actions">
+                  <button onClick={() => setShowRevision(false)} className="dsa-btn-cancel">Cancel</button>
+                  <button onClick={startRevision} className="dsa-btn-submit" style={{ background: "#8b5cf6" }}>Start Revision 🚀</button>
+                </div>
+              </>
+            ) : revisionDone ? (
+              <>
+                <div style={{ textAlign: "center", padding: "20px 0" }}>
+                  <div style={{ fontSize: "48px", marginBottom: "12px" }}>🎉</div>
+                  <h2>Revision Complete!</h2>
+                  <p style={{ color: "#9ca3af", marginTop: "8px" }}>You revised {revisionQuestions.length} questions today. Great work!</p>
+                  <div style={{ display: "flex", gap: "10px", justifyContent: "center", marginTop: "24px" }}>
+                    <button onClick={resetRevision} className="dsa-btn-cancel">Revise Again</button>
+                    <button onClick={() => { setShowRevision(false); resetRevision(); }} className="dsa-btn-submit">Done ✅</button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+                  <h2>🔁 Revision</h2>
+                  <span style={{ color: "#9ca3af", fontSize: "13px" }}>{currentRevIdx + 1} / {revisionQuestions.length}</span>
+                </div>
+
+                {/* Progress bar */}
+                <div style={{ background: "#ffffff15", borderRadius: "99px", height: "6px", marginBottom: "20px" }}>
+                  <div style={{ background: "#8b5cf6", borderRadius: "99px", height: "6px", width: `${((currentRevIdx + 1) / revisionQuestions.length) * 100}%`, transition: "width 0.3s" }} />
+                </div>
+
+                {/* Question Card */}
+                <div style={{ background: "#ffffff08", border: "1px solid #ffffff15", borderRadius: "12px", padding: "20px", marginBottom: "20px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
+                    <h3 style={{ color: "#f0f0f0", fontSize: "18px" }}>{currentQ.title}</h3>
+                    {currentQ.link && (
+                      <a href={currentQ.link} target="_blank" rel="noreferrer" style={{ color: "#3b82f6", fontSize: "12px", textDecoration: "none" }}>↗ Open</a>
+                    )}
+                  </div>
+
+                  <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "12px" }}>
+                    <span style={{ background: DIFF_COLOR[currentQ.difficulty] + "22", color: DIFF_COLOR[currentQ.difficulty], border: `1px solid ${DIFF_COLOR[currentQ.difficulty]}44`, padding: "2px 10px", borderRadius: "99px", fontSize: "12px" }}>{currentQ.difficulty}</span>
+                    <span style={{ background: "#ffffff10", color: "#9ca3af", padding: "2px 10px", borderRadius: "99px", fontSize: "12px" }}>{currentQ.tag}</span>
+                  </div>
+
+                  {currentQ.note && (
+                    <div style={{ color: "#9ca3af", fontSize: "13px", fontStyle: "italic" }}>📝 {currentQ.note}</div>
+                  )}
+                </div>
+
+                <div className="dsa-modal-actions">
+                  <button onClick={() => { setShowRevision(false); resetRevision(); }} className="dsa-btn-cancel">Exit</button>
+                  <button onClick={nextRevision} className="dsa-btn-submit" style={{ background: "#8b5cf6" }}>
+                    {currentRevIdx + 1 === revisionQuestions.length ? "Finish 🎉" : "Next →"}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* ── Add/Edit Modal ── */}
       {showForm && (
-        <div
-          className="dsa-modal-overlay"
-          onClick={e => { if (e.target === e.currentTarget) setShowForm(false); }}
-        >
+        <div className="dsa-modal-overlay" onClick={e => { if (e.target === e.currentTarget) setShowForm(false); }}>
           <div className="dsa-modal">
             <h2>{editId ? "Edit Question" : "Add Question"}</h2>
-
-            <input
-              value={form.title}
-              onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-              placeholder="Question title *"
-              className="dsa-input"
-            />
-
+            <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="Question title *" className="dsa-input" />
             <div className="dsa-modal-grid">
               <select value={form.tag} onChange={e => setForm(f => ({ ...f, tag: e.target.value }))} className="dsa-input dsa-select">
                 {TAGS.map(t => <option key={t}>{t}</option>)}
@@ -242,22 +348,8 @@ export default function DSATracker() {
                 {STATUSES.map(s => <option key={s}>{s}</option>)}
               </select>
             </div>
-
-            <input
-              value={form.link}
-              onChange={e => setForm(f => ({ ...f, link: e.target.value }))}
-              placeholder="LeetCode / GFG link (optional)"
-              className="dsa-input"
-            />
-
-            <textarea
-              value={form.note}
-              onChange={e => setForm(f => ({ ...f, note: e.target.value }))}
-              placeholder="Notes, approach, hints... (optional)"
-              rows={3}
-              className="dsa-input dsa-textarea"
-            />
-
+            <input value={form.link} onChange={e => setForm(f => ({ ...f, link: e.target.value }))} placeholder="LeetCode / GFG link (optional)" className="dsa-input" />
+            <textarea value={form.note} onChange={e => setForm(f => ({ ...f, note: e.target.value }))} placeholder="Notes, approach, hints... (optional)" rows={3} className="dsa-input dsa-textarea" />
             <div className="dsa-modal-actions">
               <button onClick={() => setShowForm(false)} className="dsa-btn-cancel">Cancel</button>
               <button onClick={handleSubmit} className="dsa-btn-submit">{editId ? "Save Changes" : "Add"}</button>

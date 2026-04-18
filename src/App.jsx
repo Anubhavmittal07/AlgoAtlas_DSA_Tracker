@@ -10,7 +10,7 @@ import DSATracker from './frontend/component/DSATracker'
 import AuthPage from './frontend/component/AuthPage'
 import AboutPage from './frontend/component/AboutPage'
 import { useState } from 'react'
-import Chatbot from './frontend/AiChatbot/chatbot'
+import Chatbot from './frontend/AiChatbot/Chatbot'
 
 function Protected({ children }) {
   const { user } = useAuth();

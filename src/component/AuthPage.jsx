@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import "./AuthPage.css";
@@ -13,7 +13,13 @@ export default function AuthPage() {
   const [form, setForm] = useState({ name: "", email: "", password: "", confirm: "" });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const { login, signup } = useAuth();
+  const { user, login, signup } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/", { replace: true });
+    }
+  }, [user, navigate]);
 
   function set(key, val) {
     setForm(f => ({ ...f, [key]: val }));
@@ -37,9 +43,9 @@ export default function AuthPage() {
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setLoading(true);
     await new Promise(r => setTimeout(r, 500));
-    const result = mode === "login"
+    const result =await( mode === "login"
       ? login(form.email, form.password)
-      : signup(form.name, form.email, form.password);
+      : signup(form.name, form.email, form.password));
     setLoading(false);
     if (result.ok) navigate("/");
     else setErrors({ general: result.error });

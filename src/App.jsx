@@ -14,7 +14,16 @@ import Chatbot from './AiChatbot/Chatbot'
 
 
 function Protected({ children }) {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0d1117] text-white">
+        <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   return user ? children : <Navigate to="/login" replace />;
 }
 
